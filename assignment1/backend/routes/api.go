@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"app/app/middleware"
 	"app/app/modules"
 
 	"github.com/gin-gonic/gin"
@@ -8,9 +9,20 @@ import (
 
 func api(r *gin.RouterGroup, mod *modules.Modules) {
 
-	users := r.Group("/users")
+	md := middleware.AuthMiddleware(mod)
+
+	auth := r.Group("/auth")
+	{
+		auth.POST("/login", mod.Auth.Ctl.Login)
+	}
+
+	users := r.Group("/users", md)
 	{
 		users.POST("", mod.User.Ctl.Create)
+		users.PUT("/:id", mod.User.Ctl.Update)
+		users.DELETE("/:id", mod.User.Ctl.Delete)
+		users.GET("/:id", mod.User.Ctl.Get)
 		users.GET("", mod.User.Ctl.List)
+		users.PATCH("/:id/password", mod.User.Ctl.UpdatePassword)
 	}
 }

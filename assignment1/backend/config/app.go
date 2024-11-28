@@ -1,6 +1,7 @@
 package config
 
 import (
+	"app/config/log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -10,6 +11,7 @@ import (
 func Init() {
 	godotenv.Load()
 	app()
+	log.Init()
 }
 
 func app() {

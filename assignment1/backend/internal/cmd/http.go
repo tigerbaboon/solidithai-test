@@ -10,12 +10,21 @@ import (
 	"github.com/spf13/viper"
 )
 
+type ginLogger struct{}
+
+func (l *ginLogger) Write(p []byte) (n int, err error) {
+	// log.Info(string(p))
+	return len(p), nil
+}
+
 func Http() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "http",
 		Short: "Start the HTTP server",
 		Run: func(cmd *cobra.Command, args []string) {
+
 			r := gin.Default()
+
 			r.GET("/ping", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"message": "pong",

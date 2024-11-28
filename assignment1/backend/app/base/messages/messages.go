@@ -7,8 +7,9 @@ var (
 	Unauthorized   = "unauthorized"
 	InvalidRequest = "invalid-request-form"
 
-	UserAlreadyExists  = "user-already-exists"
-	UserNotFound       = "user-not-found"
-	UserIsInUse        = "user-is-in-use"
-	EmailAlreadyExists = "email-already-exists"
+	UserAlreadyExists       = "user-already-exists"
+	UserNotFound            = "user-not-found"
+	EmailAlreadyExists      = "email-already-exists"
+	UserOrPasswordIncorrect = "user-or-password-incorrect"
+	UserPasswordNotFound    = "user-password-not-found"
 )

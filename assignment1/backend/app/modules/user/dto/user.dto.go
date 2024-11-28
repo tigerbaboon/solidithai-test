@@ -8,7 +8,9 @@ type CreateUserRequest struct {
 }
 
 type UpdateUserRequest struct {
-	CreateUserRequest
+	FirstName string `json:"firstName" binding:"required"`
+	LastName  string `json:"lastName" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
 }
 
 type GetUserByIDRequest struct {
@@ -28,4 +30,8 @@ type UserResponse struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	Email     string `json:"email"`
+}
+
+type UpdatePasswordRequest struct {
+	Password string `json:"password" binding:"required,min=8"`
 }

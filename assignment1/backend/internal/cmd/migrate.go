@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"app/app/modules"
-	"app/app/util/log"
+	"app/config/log"
 	"app/database/migrations"
 	"app/database/seeds"
 	"context"

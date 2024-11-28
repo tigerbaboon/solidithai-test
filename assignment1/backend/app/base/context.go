@@ -144,6 +144,10 @@ func defaultJSON(ctx *gin.Context, code int, msgID string, data any, paginate *R
 	return nil
 }
 
+func Created(ctx *gin.Context, data any) error {
+	return defaultJSON(ctx, http.StatusCreated, messages.Success, data, nil)
+}
+
 func Success(ctx *gin.Context, data any) error {
 	return defaultJSON(ctx, http.StatusOK, messages.Success, data, nil)
 }

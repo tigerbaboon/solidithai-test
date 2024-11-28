@@ -1,6 +1,8 @@
 package modules
 
 import (
+	"app/app/modules/accesstoken"
+	"app/app/modules/auth"
 	"app/app/modules/user"
 	"app/config"
 
@@ -8,8 +10,10 @@ import (
 )
 
 type Modules struct {
-	DB   *bun.DB
-	User *user.UserModule
+	DB          *bun.DB
+	User        *user.UserModule
+	Auth        *auth.AuthModule
+	Accesstoken *accesstoken.AccessTokenModule
 }
 
 func Get() *Modules {
@@ -18,9 +22,13 @@ func Get() *Modules {
 	db := config.Database()
 
 	user := user.New(db)
+	accesstoken := accesstoken.New(db)
+	auth := auth.New(db, user, accesstoken)
 
 	return &Modules{
-		DB:   db,
-		User: user,
+		DB:          db,
+		User:        user,
+		Auth:        auth,
+		Accesstoken: accesstoken,
 	}
 }

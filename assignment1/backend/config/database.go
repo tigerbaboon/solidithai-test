@@ -50,6 +50,7 @@ func defaultConfig() (*bun.DB, error) {
 	if err != nil {
 		panic(err)
 	}
+
 	sqldb := stdlib.OpenDB(*config)
 	db := bun.NewDB(sqldb, pgdialect.New())
 
