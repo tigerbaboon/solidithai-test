@@ -3,6 +3,7 @@ package auth
 import (
 	"app/app/base"
 	"app/app/base/messages"
+	"app/app/helper"
 	authdto "app/app/modules/auth/dto"
 	"app/config/log"
 
@@ -19,7 +20,7 @@ func newController(authService *AuthService) *AuthController {
 	}
 }
 
-func (ctl *AuthController) Login(ctx *gin.Context) {
+func (c *AuthController) Login(ctx *gin.Context) {
 	req := authdto.LoginRequest{}
 	if err := ctx.Bind(&req); err != nil {
 		log.Error(err.Error())
@@ -27,7 +28,7 @@ func (ctl *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	data, mserr, err := ctl.authSvc.Login(ctx, req)
+	data, mserr, err := c.authSvc.Login(ctx, req)
 	if err != nil {
 		ms := messages.InternalError
 		if mserr {
@@ -39,4 +40,22 @@ func (ctl *AuthController) Login(ctx *gin.Context) {
 	}
 
 	base.Created(ctx, data)
+}
+
+func (c *AuthController) Logout(ctx *gin.Context) {
+	user, err := helper.GetAuthorzied(ctx)
+	if err != nil {
+		log.Error(err.Error())
+		base.InternalServerError(ctx, messages.InternalError, nil)
+		return
+	}
+
+	err = c.authSvc.Logout(ctx, *user)
+	if err != nil {
+		log.Error(err.Error())
+		base.InternalServerError(ctx, messages.InternalError, nil)
+		return
+	}
+
+	base.Success(ctx, nil)
 }

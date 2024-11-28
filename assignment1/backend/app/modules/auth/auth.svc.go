@@ -64,3 +64,10 @@ func (s *AuthService) Login(ctx context.Context, req authdto.LoginRequest) (*str
 
 	return accesstoken, false, err
 }
+
+func (s *AuthService) Logout(ctx context.Context, userID string) error {
+
+	err := s.accesstoken.Svc.Delete(ctx, userID)
+
+	return err
+}

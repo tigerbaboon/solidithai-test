@@ -14,6 +14,7 @@ func api(r *gin.RouterGroup, mod *modules.Modules) {
 	auth := r.Group("/auth")
 	{
 		auth.POST("/login", mod.Auth.Ctl.Login)
+		auth.POST("/logout", md, mod.Auth.Ctl.Logout)
 	}
 
 	users := r.Group("/users", md)
@@ -23,6 +24,8 @@ func api(r *gin.RouterGroup, mod *modules.Modules) {
 		users.DELETE("/:id", mod.User.Ctl.Delete)
 		users.GET("/:id", mod.User.Ctl.Get)
 		users.GET("", mod.User.Ctl.List)
+
+		users.GET("/info", mod.User.Ctl.Info)
 		users.PATCH("/:id/password", mod.User.Ctl.UpdatePassword)
 	}
 }

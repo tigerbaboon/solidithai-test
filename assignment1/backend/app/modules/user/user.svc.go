@@ -158,6 +158,21 @@ func (s *UserService) ExistByEmail(ctx context.Context, email string) (*entities
 	return &m, nil
 }
 
+func (s *UserService) Info(ctx context.Context, userID string) (*userdto.UserResponse, error) {
+
+	m := userdto.UserResponse{}
+
+	err := s.db.NewSelect().Model((*entities.UserEntity)(nil)).
+		Column("id", "first_name", "last_name", "email").
+		Where("id = ?", userID).
+		Scan(ctx, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	return &m, nil
+}
+
 func (s *UserService) List(ctx context.Context, req userdto.GetUserListRequest) ([]userdto.UserResponse, int, error) {
 
 	m := []userdto.UserResponse{}

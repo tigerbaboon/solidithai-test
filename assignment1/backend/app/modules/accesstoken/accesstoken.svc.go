@@ -37,5 +37,11 @@ func (s *AccessTokenService) Verify(ctx context.Context, userID string, token st
 	}
 
 	return ex
+}
 
+func (s *AccessTokenService) Delete(ctx context.Context, userID string) error {
+
+	_, err := s.db.NewDelete().Model(&entities.AccessTokenEntity{}).Where("user_id = ?", userID).Exec(ctx)
+
+	return err
 }

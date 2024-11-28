@@ -3,6 +3,7 @@ package user
 import (
 	"app/app/base"
 	"app/app/base/messages"
+	"app/app/helper"
 	userdto "app/app/modules/user/dto"
 	"app/config/log"
 
@@ -104,6 +105,25 @@ func (c *UserController) Get(ctx *gin.Context) {
 	}
 
 	data, err := c.userSvc.Get(ctx, id)
+	if err != nil {
+		log.Error(err.Error())
+		base.InternalServerError(ctx, messages.InternalError, nil)
+		return
+	}
+
+	base.Success(ctx, data)
+}
+
+func (c *UserController) Info(ctx *gin.Context) {
+
+	user, err := helper.GetAuthorzied(ctx)
+	if err != nil {
+		log.Error(err.Error())
+		base.InternalServerError(ctx, messages.InternalError, nil)
+		return
+	}
+
+	data, err := c.userSvc.Info(ctx, *user)
 	if err != nil {
 		log.Error(err.Error())
 		base.InternalServerError(ctx, messages.InternalError, nil)
