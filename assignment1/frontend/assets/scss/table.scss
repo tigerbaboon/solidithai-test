@@ -1,0 +1,28 @@
+table {
+  @apply w-full divide-y divide-solid;
+
+  thead {
+    @apply h-16;
+  }
+
+  tr,
+  td {
+    @apply whitespace-nowrap;
+  }
+
+  th {
+    @apply text-start py-2 px-4;
+  }
+
+  tbody {
+    @apply divide-y divide-solid;
+
+    tr {
+      @apply h-16;
+    }
+
+    td {
+      @apply py-2 px-4;
+    }
+  }
+}

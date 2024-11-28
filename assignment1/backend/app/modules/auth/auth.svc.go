@@ -7,6 +7,7 @@ import (
 	"app/app/modules/user"
 	"app/app/util/hashing"
 	"app/app/util/jwt"
+	"app/config/log"
 	"context"
 	"errors"
 
@@ -29,21 +30,23 @@ func newService(db *bun.DB, user *user.UserModule, accesstoken *accesstoken.Acce
 
 func (s *AuthService) Login(ctx context.Context, req authdto.LoginRequest) (*string, bool, error) {
 
-	user, err := s.user.Svc.ExistByEmail(ctx, req.Email)
+	user, checkUser, err := s.user.Svc.ExistByEmail(ctx, req.Email)
 	if err != nil {
+		log.Error(err.Error())
 		return nil, false, err
 	}
 
-	if user == nil {
+	if !checkUser {
 		return nil, true, errors.New(messages.UserOrPasswordIncorrect)
 	}
 
-	userPass, err := s.user.Svc.ExistPassword(ctx, user.ID)
+	userPass, checkPass, err := s.user.Svc.ExistPassword(ctx, user.ID)
 	if err != nil {
+		log.Error(err.Error())
 		return nil, false, err
 	}
 
-	if userPass == nil {
+	if !checkPass {
 		return nil, true, errors.New(messages.UserPasswordNotFound)
 	}
 
@@ -57,6 +60,7 @@ func (s *AuthService) Login(ctx context.Context, req authdto.LoginRequest) (*str
 
 	accesstoken, err := jwt.CreateToken(claim)
 	if err != nil {
+		log.Error(err.Error())
 		return nil, false, err
 	}
 

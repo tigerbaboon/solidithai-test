@@ -1,0 +1,11 @@
+@use './button.scss' as *;
+@use './form.scss' as *;
+@use './table.scss' as *;
+
+body {
+  @apply bg-[#FAF9F6] text-gray-800;
+}
+
+.content {
+  @apply bg-white shadow-lg rounded-lg p-4;
+}

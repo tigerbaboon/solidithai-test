@@ -39,7 +39,7 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	base.Created(ctx, data)
+	base.Success(ctx, data)
 }
 
 func (c *AuthController) Logout(ctx *gin.Context) {

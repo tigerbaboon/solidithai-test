@@ -12,4 +12,5 @@ var (
 	EmailAlreadyExists      = "email-already-exists"
 	UserOrPasswordIncorrect = "user-or-password-incorrect"
 	UserPasswordNotFound    = "user-password-not-found"
+	CantDeleteMyself        = "cant-delete-myself"
 )

@@ -82,6 +82,18 @@ func (c *UserController) Delete(ctx *gin.Context) {
 		return
 	}
 
+	user, err := helper.GetAuthorzied(ctx)
+	if err != nil {
+		log.Error(err.Error())
+		base.InternalServerError(ctx, messages.InternalError, nil)
+		return
+	}
+
+	if id.ID == *user {
+		base.InternalServerError(ctx, messages.CantDeleteMyself, nil)
+		return
+	}
+
 	data, mserr, err := c.userSvc.Delete(ctx, id)
 	if err != nil {
 		ms := messages.InternalError

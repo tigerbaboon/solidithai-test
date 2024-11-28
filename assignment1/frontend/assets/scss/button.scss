@@ -1,0 +1,41 @@
+button {
+  &.btn {
+    @apply inline-flex justify-center items-center align-middle transition-all duration-300 ease-in-out rounded-lg gap-1;
+  }
+
+  &.outline-primary {
+    @apply border-2 border-blue-500  hover:bg-blue-500 hover:text-white;
+  }
+
+  &.outline-secondary {
+    @apply border-2 border-gray-500 text-gray-500  hover:bg-gray-500 hover:text-white;
+  }
+
+  &.primary {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+  }
+
+  &.warning {
+    @apply bg-yellow-500 text-white hover:bg-yellow-600;
+  }
+
+  &.success {
+    @apply bg-green-500 text-white hover:bg-green-600;
+  }
+
+  &.danger {
+    @apply bg-rose-500 text-white hover:bg-rose-600;
+  }
+
+  &.sm {
+    @apply text-sm py-1.5 px-2.5;
+  }
+
+  &.md {
+    @apply text-base py-2 px-3;
+  }
+
+  &.lg {
+    @apply text-lg py-3 px-3.5;
+  }
+}

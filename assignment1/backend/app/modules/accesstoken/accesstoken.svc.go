@@ -31,6 +31,15 @@ func (s *AccessTokenService) Create(ctx context.Context, userID string, token st
 
 func (s *AccessTokenService) Verify(ctx context.Context, userID string, token string) bool {
 
+	exUser, err := s.db.NewSelect().Model(&entities.UserEntity{}).Where("id = ?", userID).Exists(ctx)
+	if err != nil {
+		return false
+	}
+
+	if !exUser {
+		return false
+	}
+
 	ex, err := s.db.NewSelect().Model(&entities.AccessTokenEntity{}).Where("user_id = ? and token = ?", userID, token).Exists(ctx)
 	if err != nil {
 		return false

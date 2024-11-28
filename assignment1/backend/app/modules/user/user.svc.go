@@ -142,7 +142,7 @@ func (s *UserService) Get(ctx context.Context, id userdto.GetUserByIDRequest) (*
 	return &m, nil
 }
 
-func (s *UserService) ExistByEmail(ctx context.Context, email string) (*entities.UserEntity, error) {
+func (s *UserService) ExistByEmail(ctx context.Context, email string) (*entities.UserEntity, bool, error) {
 
 	m := entities.UserEntity{}
 
@@ -150,12 +150,13 @@ func (s *UserService) ExistByEmail(ctx context.Context, email string) (*entities
 		Where("email = ?", email).
 		Scan(ctx)
 	if err != nil {
-		if !errors.Is(err, sql.ErrNoRows) {
-			return nil, err
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, false, nil
 		}
+		return nil, false, err
 	}
 
-	return &m, nil
+	return &m, true, nil
 }
 
 func (s *UserService) Info(ctx context.Context, userID string) (*userdto.UserResponse, error) {
@@ -237,7 +238,7 @@ func (s *UserService) UpdatePassword(ctx context.Context, id userdto.GetUserByID
 	return nil, false, err
 }
 
-func (s *UserService) ExistPassword(ctx context.Context, userID string) (*entities.UserPasswordEntity, error) {
+func (s *UserService) ExistPassword(ctx context.Context, userID string) (*entities.UserPasswordEntity, bool, error) {
 
 	m := entities.UserPasswordEntity{}
 
@@ -246,9 +247,11 @@ func (s *UserService) ExistPassword(ctx context.Context, userID string) (*entiti
 		Scan(ctx)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, err
+			return nil, false, nil
 		}
+
+		return nil, false, err
 	}
 
-	return &m, nil
+	return &m, true, nil
 }
