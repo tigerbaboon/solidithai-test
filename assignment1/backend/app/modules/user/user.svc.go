@@ -57,8 +57,6 @@ func (s *UserService) Create(ctx context.Context, req userdto.CreateUserRequest)
 		return err
 	})
 
-	fmt.Println(mserr)
-
 	return &m, mserr, err
 }
 

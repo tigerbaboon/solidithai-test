@@ -20,6 +20,7 @@ func main() {
 
 	rootCmd.AddCommand(cmd.Http())
 	rootCmd.AddCommand(cmd.Migrate())
+	rootCmd.AddCommand(cmd.InitMigrate())
 
 	rootCmd.Execute()
 }

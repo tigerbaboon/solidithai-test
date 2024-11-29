@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=assignment-1
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  migrate:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "9999:9999"
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_DATABASE=assignment-1
+      - DB_USER=root
+      - DB_PASSWORD=secret
+    command: "migrate"
+    depends_on:
+      postgres:
+        condition: service_healthy
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_NAME=assignment1
+      - PORT=8080
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_DATABASE=assignment-1
+      - DB_USER=root
+      - DB_PASSWORD=secret
+      - JWT_SECRET=assignment1
+      - JWT_DURATION=24
+    command: "http"
+    depends_on:
+      postgres:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NUXT_PUBLIC_WEB_API=http://127.0.0.1:8080/api
+    depends_on:
+      - backend

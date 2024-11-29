@@ -12,6 +12,35 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func InitMigrate() *cobra.Command {
+	cmd := &cobra.Command{
+		Use: "migrate",
+		Run: func(cmd *cobra.Command, args []string) {
+			log.Info("Executing init migrate...")
+
+			mod := modules.Get()
+			ctx := context.Background()
+			for _, ent := range migrations.Entities() {
+				if _, err := mod.DB.NewCreateTable().Model(ent).Exec(ctx); err != nil {
+					log.Error("%s", err)
+					os.Exit(1)
+					return
+				}
+			}
+
+			if err := seeds.Seeds(mod, ctx); err != nil {
+				log.Error("%s", err)
+				os.Exit(1)
+				return
+			}
+
+			log.Info("init migrate success.")
+		},
+	}
+
+	return cmd
+}
+
 func Migrate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "db",
@@ -30,14 +59,18 @@ func migrateUp() *cobra.Command {
 		Use: "up",
 		Run: func(cmd *cobra.Command, args []string) {
 			log.Info("Executing model up...")
-			db := modules.Get().DB
+
+			mod := modules.Get()
+			ctx := context.Background()
+
 			for _, ent := range migrations.Entities() {
-				if _, err := db.NewCreateTable().Model(ent).Exec(context.Background()); err != nil {
+				if _, err := mod.DB.NewCreateTable().Model(ent).Exec(ctx); err != nil {
 					log.Error("%s", err)
 					os.Exit(1)
 					return
 				}
 			}
+
 			log.Info("model up success.")
 		},
 	}
