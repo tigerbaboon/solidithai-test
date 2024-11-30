@@ -11,3 +11,4 @@
 - Database use PostgresSQL
 
 ## 🔗 **[ASSIGNMENT-1](https://github.com/tigerbaboon/solidithai-test/tree/main/assignment1)**
+## 🔗 **[ASSIGNMENT-2](https://github.com/tigerbaboon/solidithai-test/tree/main/assignment2)**
