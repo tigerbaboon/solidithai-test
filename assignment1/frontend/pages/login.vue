@@ -30,6 +30,7 @@
           id="password"
           placeholder="Password"
           class="group"
+          @keydown.enter="login"
         />
       </div>
 

@@ -15,6 +15,7 @@
           <thead>
             <tr>
               <th class="">#</th>
+              <th class="">Avatar</th>
               <th class="">Name</th>
               <th class="">Email</th>
               <th class="">Actions</th>
@@ -24,6 +25,9 @@
             <tr v-for="(user, i) in users.datas" :key="i">
               <td class="">
                 {{ i + 1 + (users.query.page - 1) * users.query.size }}
+              </td>
+              <td class="">
+                <img :src="user.avatar" alt="" class="w-10 h-10 rounded-full" />
               </td>
               <td class="">{{ user.firstName }} {{ user.lastName }}</td>
               <td class="">
@@ -40,6 +44,12 @@
             </tr>
           </tbody>
         </table>
+        <Paginate
+          :data="users.paginate"
+          @setPage="setQuery('page', $event)"
+          @setLimit="setQuery('limit', $event)"
+          @reload="getUsers()"
+        />
       </div>
     </div>
   </div>
@@ -89,6 +99,18 @@ const getUsers = async () => {
     .finally(() => {
       loading.value = false
     })
+}
+const setQuery = (prefix: any, event: any) => {
+  switch (prefix) {
+    case 'page':
+      users.value.query.page = event
+      break
+    case 'limit':
+      users.value.query.size = event
+      break
+    default:
+      break
+  }
 }
 
 onMounted(() => {

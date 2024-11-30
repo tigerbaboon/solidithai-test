@@ -5,6 +5,7 @@ interface State {
   userId: string
   openSideBar: boolean
   name: string
+  isWsConnected: boolean
 }
 
 export const useIndexStore = defineStore('index', {
@@ -13,6 +14,7 @@ export const useIndexStore = defineStore('index', {
     userId: '',
     openSideBar: true,
     name: '',
+    isWsConnected: false,
   }),
 })
 

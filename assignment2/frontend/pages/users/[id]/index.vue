@@ -30,7 +30,34 @@
         </button>
       </template>
     </div>
-    <div class="grid md:grid-cols-2 gap-4">
+    <div class="flex justify-center">
+      <div class="w-auto flex flex-col gap-4">
+        <template v-if="!isEdit">
+          <img
+            :src="user.avatar"
+            alt=""
+            class="h-[150px] w-[150px] rounded-full"
+          />
+        </template>
+        <template v-else>
+          <img
+            :src="userEdit.avatar"
+            alt=""
+            class="h-[150px] w-[150px] rounded-full"
+          />
+          <button class="btn primary md" @click="random">
+            <template v-if="!loadingRan">
+              <Icon name="mdi:reload" class="text-lg" />
+            </template>
+            <template v-else>
+              <Icon name="uiw:loading" class="animate-spin text-2xl" />
+            </template>
+            Random Avatar
+          </button>
+        </template>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mt-4">
       <div class="form-input">
         <label>Email <span class="text-red-500 text-sm">*</span></label>
         <input
@@ -112,6 +139,7 @@ const user = ref<User>({
   password: '',
   firstName: '',
   lastName: '',
+  avatar: '',
 })
 const userEdit = ref<User>({
   id: '',
@@ -119,13 +147,14 @@ const userEdit = ref<User>({
   password: '',
   firstName: '',
   lastName: '',
+  avatar: '',
 })
 
 const loading = ref(true)
 const isEdit = ref(false)
 const showModalResetPassword = ref(false)
 const title = ref<Breadcrumb[]>([])
-
+const loadingRan = ref(false)
 const getUser = async () => {
   loading.value = true
   await service.user
@@ -137,6 +166,7 @@ const getUser = async () => {
       user.value.lastName = data.lastName
       user.value.email = data.email
       user.value.id = data.id
+      user.value.avatar = data.avatar
 
       userEdit.value = JSON.parse(JSON.stringify(user.value))
 
@@ -192,7 +222,7 @@ const update = async () => {
         title: 'Success',
       })
       isEdit.value = false
-      getUser()
+      router.push('/users')
     })
     .catch((err: any) => {
       errorResp(err.response)
@@ -230,6 +260,14 @@ const deleteUser = () => {
         })
     }
   })
+}
+
+const random = () => {
+  loadingRan.value = true
+  setTimeout(() => {
+    userEdit.value.avatar = randomAvatar()
+    loadingRan.value = false
+  }, 1500)
 }
 
 onMounted(() => {

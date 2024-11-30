@@ -132,6 +132,7 @@ const screenWidthMobile = ref<number>(1280)
 
 const menus = ref<MenuList[]>([
   { name: 'Home', icon: 'mdi:home-variant', to: '/' },
+  { name: 'Chat', icon: 'mdi:message-processing', to: '/chat' },
   { name: 'User', icon: 'mdi:account', to: '/users' },
 ])
 

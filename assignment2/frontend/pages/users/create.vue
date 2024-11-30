@@ -7,7 +7,25 @@
         <Icon name="mdi:check" class="text-lg" /> Submit
       </button>
     </div>
-    <div class="grid md:grid-cols-2 gap-4">
+    <div class="flex justify-center">
+      <div class="w-auto flex flex-col gap-4">
+        <img
+          :src="user.avatar"
+          alt=""
+          class="h-[150px] w-[150px] rounded-full"
+        />
+        <button class="btn primary md" @click="random">
+          <template v-if="!loadingRan">
+            <Icon name="mdi:reload" class="text-lg" />
+          </template>
+          <template v-else>
+            <Icon name="uiw:loading" class="animate-spin text-2xl" />
+          </template>
+          Random Avatar
+        </button>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mt-4">
       <div class="form-input">
         <label>Email <span class="text-red-500 text-sm">*</span></label>
         <input v-model="user.email" type="text" placeholder="Email" />
@@ -100,6 +118,7 @@ const title = ref<Breadcrumb[]>([
 const router = useRouter()
 
 const loading = ref(false)
+const loadingRan = ref(false)
 const showPassword = ref<boolean>(false)
 const showConfirmPassword = ref<boolean>(false)
 
@@ -109,6 +128,7 @@ const user = ref<User>({
   password: '',
   firstName: '',
   lastName: '',
+  avatar: '',
 })
 
 const confirmPassword = ref<string>('')
@@ -152,6 +172,18 @@ const submit = async () => {
       loading.value = false
     })
 }
+
+const random = () => {
+  loadingRan.value = true
+  setTimeout(() => {
+    user.value.avatar = randomAvatar()
+    loadingRan.value = false
+  }, 1500)
+}
+
+onMounted(() => {
+  random()
+})
 </script>
 
 <style scoped></style>

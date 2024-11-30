@@ -3,8 +3,9 @@ package modules
 import (
 	"app/app/modules/accesstoken"
 	"app/app/modules/auth"
-	"app/app/modules/socket"
+	"app/app/modules/message"
 	"app/app/modules/user"
+	"app/app/modules/websocket"
 	"app/config"
 
 	"github.com/uptrace/bun"
@@ -15,7 +16,8 @@ type Modules struct {
 	User        *user.UserModule
 	Auth        *auth.AuthModule
 	Accesstoken *accesstoken.AccessTokenModule
-	Websocket   *socket.UserModule
+	Websocket   *websocket.WebsocketModule
+	Message     *message.MessageModule
 }
 
 func Get() *Modules {
@@ -23,11 +25,11 @@ func Get() *Modules {
 	config.Init()
 	db := config.Database()
 
-	websocket := socket.New(db)
-
 	user := user.New(db)
 	accesstoken := accesstoken.New(db)
 	auth := auth.New(db, user, accesstoken)
+	message := message.New(db)
+	websocket := websocket.New(db, user)
 
 	return &Modules{
 		DB:          db,
@@ -35,5 +37,6 @@ func Get() *Modules {
 		Auth:        auth,
 		Accesstoken: accesstoken,
 		Websocket:   websocket,
+		Message:     message,
 	}
 }

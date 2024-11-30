@@ -29,6 +29,7 @@ func (s *UserService) Create(ctx context.Context, req userdto.CreateUserRequest)
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
+		Avatar:    req.Avatar,
 	}
 
 	var mserr bool
@@ -76,6 +77,7 @@ func (s *UserService) Update(ctx context.Context, id userdto.GetUserByIDRequest,
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
+		Avatar:    req.Avatar,
 	}
 
 	m.SetUpdateNow()
@@ -84,6 +86,7 @@ func (s *UserService) Update(ctx context.Context, id userdto.GetUserByIDRequest,
 		Set("first_name = ?", m.FirstName).
 		Set("last_name = ?", m.LastName).
 		Set("email = ?", m.Email).
+		Set("avatar = ?", m.Avatar).
 		WherePK().
 		OmitZero().
 		Returning("*").
@@ -130,7 +133,7 @@ func (s *UserService) Get(ctx context.Context, id userdto.GetUserByIDRequest) (*
 	m := userdto.UserResponse{}
 
 	err := s.db.NewSelect().Model((*entities.UserEntity)(nil)).
-		Column("id", "first_name", "last_name", "email").
+		Column("id", "first_name", "last_name", "email", "avatar").
 		Where("id = ?", id.ID).
 		Scan(ctx, &m)
 	if err != nil {
@@ -162,7 +165,7 @@ func (s *UserService) Info(ctx context.Context, userID string) (*userdto.UserRes
 	m := userdto.UserResponse{}
 
 	err := s.db.NewSelect().Model((*entities.UserEntity)(nil)).
-		Column("id", "first_name", "last_name", "email").
+		Column("id", "first_name", "last_name", "email", "avatar").
 		Where("id = ?", userID).
 		Scan(ctx, &m)
 	if err != nil {
@@ -182,7 +185,7 @@ func (s *UserService) List(ctx context.Context, req userdto.GetUserListRequest) 
 	)
 
 	query := s.db.NewSelect().Model((*entities.UserEntity)(nil)).
-		Column("id", "first_name", "last_name", "email")
+		Column("id", "first_name", "last_name", "email", "avatar")
 
 	if req.Search != "" {
 		search := fmt.Sprint("%" + strings.ToLower(req.Search) + "%")

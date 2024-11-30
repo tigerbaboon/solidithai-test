@@ -7,5 +7,6 @@ func Entities() []any {
 		(*entities.UserEntity)(nil),
 		(*entities.UserPasswordEntity)(nil),
 		(*entities.AccessTokenEntity)(nil),
+		(*entities.MessageEntity)(nil),
 	}
 }

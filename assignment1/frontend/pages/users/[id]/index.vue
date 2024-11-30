@@ -192,7 +192,7 @@ const update = async () => {
         title: 'Success',
       })
       isEdit.value = false
-      getUser()
+      router.push('/users')
     })
     .catch((err: any) => {
       errorResp(err.response)

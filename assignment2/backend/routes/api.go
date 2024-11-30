@@ -27,10 +27,15 @@ func api(r *gin.RouterGroup, mod *modules.Modules) {
 
 		users.GET("/info", mod.User.Ctl.Info)
 		users.PATCH("/:id/password", mod.User.Ctl.UpdatePassword)
+
+		users.GET("/active", mod.Websocket.Ctl.GetUserActive)
 	}
 
-	ws := r.Group("/ws")
+	messages := r.Group("/messages", md)
 	{
-		ws.GET("")
+		messages.POST("", mod.Message.Ctl.Create)
+		messages.GET("", mod.Message.Ctl.List)
 	}
+
+	r.GET("/ws", mod.Websocket.Client.ServeWS)
 }

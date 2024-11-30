@@ -40,6 +40,12 @@
             </tr>
           </tbody>
         </table>
+        <Paginate
+          :data="users.paginate"
+          @setPage="setQuery('page', $event)"
+          @setLimit="setQuery('limit', $event)"
+          @reload="getUsers()"
+        />
       </div>
     </div>
   </div>
@@ -89,6 +95,19 @@ const getUsers = async () => {
     .finally(() => {
       loading.value = false
     })
+}
+
+const setQuery = (prefix: any, event: any) => {
+  switch (prefix) {
+    case 'page':
+      users.value.query.page = event
+      break
+    case 'limit':
+      users.value.query.size = event
+      break
+    default:
+      break
+  }
 }
 
 onMounted(() => {

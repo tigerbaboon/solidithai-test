@@ -6,6 +6,7 @@ export interface User {
   password?: string
   firstName: string
   lastName: string
+  avatar: string
 }
 
 export interface UserList {
@@ -13,4 +14,17 @@ export interface UserList {
   query: Query
   loading?: boolean
   paginate: Paginate | null
+}
+
+export interface UserActive {
+  id: string
+  name: string
+  avatar: string
+}
+export interface UserChat {
+  id: string
+  name: string
+  avatar: string
+  message: string
+  isOwner: boolean
 }

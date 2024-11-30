@@ -23,5 +23,4 @@ func Router(app *gin.Engine, mod *modules.Modules) {
 	}))
 
 	api(app.Group("/api"), mod)
-
 }

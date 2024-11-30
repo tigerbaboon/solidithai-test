@@ -26,8 +26,6 @@ func Http() *cobra.Command {
 
 			mod := modules.Get()
 
-			// mod.Websocket.Hub.Start()
-
 			routes.Router(r, mod)
 
 			port := viper.GetString("PORT")

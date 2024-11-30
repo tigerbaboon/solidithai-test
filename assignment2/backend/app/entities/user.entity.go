@@ -9,6 +9,7 @@ type UserEntity struct {
 	FirstName string `bun:"first_name,notnull"`
 	LastName  string `bun:"last_name,notnull"`
 	Email     string `bun:"email,notnull,unique"`
+	Avatar    string `bun:"avatar,notnull"`
 
 	CreateUpdateUnixTimestamp
 }

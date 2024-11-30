@@ -57,3 +57,10 @@ export const ResetPassword = (id: any, password: string) => {
     },
   })
 }
+
+export const GetActive = () => {
+  return client({
+    url: '/users/active',
+    method: 'get',
+  })
+}

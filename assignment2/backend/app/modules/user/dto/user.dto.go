@@ -5,12 +5,14 @@ type CreateUserRequest struct {
 	LastName  string `json:"lastName" binding:"required"`
 	Email     string `json:"email" binding:"required,email"`
 	Password  string `json:"password" binding:"required,min=8"`
+	Avatar    string `json:"avatar" binding:"required"`
 }
 
 type UpdateUserRequest struct {
 	FirstName string `json:"firstName" binding:"required"`
 	LastName  string `json:"lastName" binding:"required"`
 	Email     string `json:"email" binding:"required,email"`
+	Avatar    string `json:"avatar" binding:"required"`
 }
 
 type GetUserByIDRequest struct {
@@ -30,6 +32,7 @@ type UserResponse struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	Email     string `json:"email"`
+	Avatar    string `json:"avatar"`
 }
 
 type UpdatePasswordRequest struct {
